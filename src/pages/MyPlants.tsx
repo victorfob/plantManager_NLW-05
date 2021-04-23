@@ -22,16 +22,16 @@ export default function MyPlants() {
   useEffect(() => {
     async function loadStoragedData() {
       const plantsStoraged = await loadPlant();
-      const nextTime = formatDistance(
-        new Date(plantsStoraged[0].dateTimeNotification).getTime(),
-        new Date().getTime(),
-        { locale: pt }
-      );
-
-      setNextWatered(
-        `Não esqueça de regar a ${plantsStoraged[0].name} daqui ${nextTime}.`
-      );
-
+      if (plantsStoraged[0]) {
+        const nextTime = formatDistance(
+          new Date(plantsStoraged[0].dateTimeNotification).getTime(),
+          new Date().getTime(),
+          { locale: pt }
+        );
+        setNextWatered(
+          `Não esqueça de regar sua ${plantsStoraged[0].name} daqui ${nextTime}.`
+        );
+      } else setNextWatered(`Ainda não há nenhuma planta registrada.`);
       setMyPlants(plantsStoraged);
       setLoading(false);
     }
@@ -79,7 +79,6 @@ export default function MyPlants() {
             />
           )}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flex: 1 }}
         />
       </View>
     </View>

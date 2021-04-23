@@ -58,8 +58,11 @@ export default function PlantSelect() {
       `plants?_sort=name&_order=asc&_page=${page}&_limit=8`
     );
 
+    if (!data) return setLoading(true);
+
     if (page > 1) {
       setPlants((oldValue) => [...oldValue, ...data]);
+      setFilteredPlants((oldValue) => [...oldValue, ...data]);
     } else {
       setPlants(data);
       setFilteredPlants(data);
