@@ -12,11 +12,11 @@ export interface PlantProps {
     times: number;
     repeat_every: string;
   };
-  dateTimeNotification: Date;
   hour: string;
+  dateTimeNotification: Date;
 }
 
-interface StoragedPlantProps {
+export interface StoragedPlantProps {
   [id: string]: {
     data: PlantProps;
   };
@@ -64,4 +64,13 @@ export async function loadPlant(): Promise<PlantProps[]> {
   } catch (error) {
     throw new Error(error);
   }
+}
+
+export async function removePlant(id: string): Promise<void> {
+  const data = await AsyncStorage.getItem("@plantmanager:plants");
+  const plants = data ? (JSON.parse(data) as StoragedPlantProps) : {};
+
+  delete plants[id];
+
+  await AsyncStorage.setItem("@plantmanager:plants", JSON.stringify(plants));
 }
